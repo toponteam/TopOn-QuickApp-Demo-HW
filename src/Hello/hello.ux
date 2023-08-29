@@ -1,0 +1,35 @@
+<template>
+  <!-- Only one root node is allowed in template. -->
+  <div class="container">
+    <text class="title">Hello World</text>
+  </div>
+</template>
+
+<style>
+  .container {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .title {
+    font-size: 100px;
+  }
+</style>
+
+<script>
+  module.exports = {
+    data: {
+      componentData: {},
+    },
+    onInit() {
+      this.$page.setTitleBar({
+        text: 'menu',
+        textColor: '#ffffff',
+        backgroundColor: '#007DFF',
+        backgroundOpacity: 0.5,
+        menu: true
+      });
+    }
+  }
+</script>

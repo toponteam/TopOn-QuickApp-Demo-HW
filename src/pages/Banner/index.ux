@@ -1,0 +1,116 @@
+<import name="ad-logs" src="../../Common/components/adLogs.ux"></import>
+<import name="topon-ad" src="@topon/quick-app-sdk-hw/placement.ux"></import>
+
+<template>
+  <div class="page-container">
+    <text class="title"> - Banner广告 - </text>
+
+    <ad-logs></ad-logs>
+
+    <input class="btn" type="button" value="加载/刷新广告" onclick="handleLoadAd" />
+
+    <!-- 使用Placement组件 -->
+    <topon-ad
+      id="top-on-ad-{{placementId}}"
+      placement-id="{{placementId}}"
+      config="{{config}}"
+      @ad-load="handleAdLoad"
+      @ad-show="handleAdShow"
+      @ad-close="handleAdClose"
+      @ad-click="handleAdClick"
+      @ad-reward="handleAdReward"
+      @ad-error="handleAdError"
+    >
+    </topon-ad>
+  </div>
+</template>
+    
+<script>
+import router from '@system.router';
+
+export default {
+  data() {
+    return {
+      loaded: false,
+      isGetAd: false,
+      config: {
+        entry: '/pages/Home', // 开屏广告结束后打开的第一个页面
+        timeout: 30000 // 默认0（走默认，开屏5秒，其他300秒），单位毫秒
+      },
+
+      placementId: '${your placementId exp: b123456}', // 请替换为您在topon 开发者后台上的placementId
+    }
+  },
+
+  onReady() {
+    // 组件未挂载完成
+  },
+
+  // 广告源Load成功回调
+  handleAdLoad(e) {
+    this.$broadcast('logsUnshift', 'demo接收load回调：' + JSON.stringify(e))
+    console.log('demo接收load回调', e)
+    this.loaded = true
+  },
+
+  // 广告源Show成功回调
+  handleAdShow(e) {
+    this.$broadcast('logsUnshift', 'demo接收show回调：' + JSON.stringify(e))
+    console.log('demo接收show回调', e)
+  },
+
+  // 广告源Close成功回调
+  handleAdClose(e) {
+    this.$broadcast('logsUnshift', 'demo接收close回调：' + JSON.stringify(e))
+    console.log('demo接收close回调', e)
+  },
+
+  handleAdClick(e) {
+    this.$broadcast('logsUnshift', 'demo接收click回调：' + JSON.stringify(e))
+    console.log('demo接收click回调', e)
+  },
+
+  handleAdReward(e) {
+    this.$broadcast('logsUnshift', 'demo接收reward回调：' + JSON.stringify(e))
+    console.log('demo接收reward回调', e)
+  },
+
+  handleAdError(e) {
+    this.$broadcast('logsUnshift', 'demo接收error回调：' + JSON.stringify(e))
+    console.log('demo接收error回调', e)
+  },
+
+  handleLoadAd() {
+    this.$broadcast('logsUnshift', '执行Load')
+    const placement = this.getSdkElement()
+    if (placement.load) {
+      placement.load()
+    }
+  },
+
+  getSdkElement() {
+    return this.$child(`top-on-ad-${this.placementId}`)
+  }
+}
+</script>
+    
+<style lang="less">
+.page-container {
+  flex-direction: column;
+  justify-content: center;
+
+  .title {
+    color: #ffa500;
+    margin: 30px;
+    text-align: center;
+  }
+
+  input {
+    margin: 30px 80px;
+    padding: 20px 0;
+    border-radius: 100px;
+    background-color: #2d8cf0;
+    color: #fff;
+  }
+}
+</style>

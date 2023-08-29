@@ -1,0 +1,21 @@
+<script>
+/**
+* 应用级别的配置，供所有页面公用
+*/
+import TOPON_AD_SDK from '@topon/quick-app-sdk-hw/app.js'
+
+export default {
+    onCreate() {
+        try {
+            const instance = new TOPON_AD_SDK({
+                app: this,
+                appId: '${your appId exp: abcdef}', // 请替换为您在topon开发者后台上的appId（您在topon开发者后台上所创建的应用ID）
+                appKey: '${your appKey exp: abcdrfg}' // 请替换为您在topon开发者后台上的 app key（topon开发者后台 => 账户信息 => key即为appKey）
+            });
+            this.$def.topon_sdk_instance = instance
+        } catch (error) {
+            console.log('error', error);
+        }
+    }
+}
+</script>

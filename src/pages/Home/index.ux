@@ -1,0 +1,141 @@
+
+<template>
+  <div class="page-container">
+    <text class="title"> - TopOn AD SDK Demo - </text>
+    <input
+      class="btn"
+      type="button"
+      value="原生广告"
+      onclick="handleSwitchPage('pages/Native')"
+    />
+    <input
+      class="btn"
+      type="button"
+      value="激励视频广告"
+      onclick="handleSwitchPage('pages/Rv')"
+    />
+    <input
+      class="btn"
+      type="button"
+      value="开屏广告"
+      onclick="handleSwitchPage('pages/Splash')"
+    />
+    <input
+      class="btn"
+      type="button"
+      value="Banner广告"
+      onclick="handleSwitchPage('pages/Banner')"
+    />
+    <input
+      class="btn"
+      type="button"
+      value="插屏广告"
+      onclick="handleSwitchPage('pages/Interstitial')"
+    />
+    <input
+      class="btn"
+      type="button"
+      value="清空缓存"
+      onclick="handleClearStorage"
+    />
+    <text class="title"> - App Setting - </text>
+    <input
+      class="input--text"
+      type="text"
+      value=""
+      placeholder="渠道 / Channel"
+      onchange="handleChangeChannel"
+    />
+    <input
+      class="input--text"
+      type="text"
+      value=""
+      placeholder="子渠道 / Sub Channel"
+      onchange="handleChangeSubChannel"
+    />
+    <textarea
+      class="input--text"
+      placeholder="Custom参数"
+      onchange="handleChangeCustom"
+    ></textarea>
+  </div>
+</template>
+    
+<script>
+import router from '@system.router'
+import storage from '@system.storage'
+import prompt from '@system.prompt'
+
+export default {
+
+  onInit() {
+    
+  },
+  handleSwitchPage(v) {
+    router.push({
+      uri: v
+    })
+    // 调用goPage会报错....
+    // this.$app.$def.goPage({
+    //   uri: 'pages/Demo'
+    // })
+  },
+
+  handleClearStorage() {
+    storage.clear({
+      success: function(data) {
+        prompt.showToast({
+          message: '清除成功'
+        })
+      }
+    })
+  },
+
+  handleChangeChannel(event) {
+    this.$app.$def.topon_sdk_instance.setChannel(event.value);
+  },
+
+  handleChangeSubChannel(event) {
+    this.$app.$def.topon_sdk_instance.setSubChannel(event.value);
+  },
+
+  handleChangeCustom(event) {
+    this.$app.$def.topon_sdk_instance.setCustomParam(event.value);
+  },
+}
+</script>
+    
+<style lang="less">
+.page-container {
+  flex-direction: column;
+  justify-content: center;
+
+  .title {
+    color: #ffa500;
+    margin: 30px;
+    text-align: center;
+  }
+
+  input {
+    margin: 10px 80px;
+    padding: 20px 0;
+    border-radius: 100px;
+    background-color: #2d8cf0;
+    color: #fff;
+  }
+  .input--text {
+    border: 2px solid #2d8cf0;
+    border-radius: 20px;
+    background-color: #FFF;
+    color: #03448a;
+    text-indent: 20px;
+    margin-bottom: 0px;
+  }
+  textarea {
+    margin: 30px 80px;
+    padding: 20px;
+    background-color: #2d8cf0;
+    color: #fff;
+  }
+}
+</style>

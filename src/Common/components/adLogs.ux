@@ -1,0 +1,36 @@
+<template>
+    <div class="ad-logs">
+        <text class="title">日志</text>
+        <list>
+            <list-item type="log" for="logs">
+                <text>#</text>
+                <text>{{$item}}</text>
+            </list-item>
+        </list>
+        <div class="btn-row">
+            <input type="button" value="清空日志" onclick="logsClear"/>
+        </div>
+    </div>
+</template>
+<script>
+export default {
+    data(){
+        return {
+            logs: []
+        }
+    },
+    onInit(){
+        this.$on('logsUnshift',this.logsUnshift)
+    },
+    logsUnshift(evt){
+        this.logs.unshift(evt.detail)
+    },
+    logsClear(){
+        this.logs = []
+        this.logs.unshift(`清空日志`)
+    }
+}
+</script>
+<style lang="less">
+@import '../common.less';
+</style>

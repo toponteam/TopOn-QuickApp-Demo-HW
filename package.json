@@ -1,0 +1,44 @@
+{
+  "name": "@topon/quick-app-demo",
+  "version": "4.0.28",
+  "subversion": {
+    "toolkit": "0.6.2"
+  },
+  "description": "TopOn快应用广告SDK Demo",
+  "main": "index.js",
+  "scripts": {
+    "build": "hap build",
+    "release": "hap release",
+    "server": "hap server",
+    "watch": "hap watch",
+    "replace:baidu": "node ./chore/index.js",
+    "start": "hap server --watch",
+    "debug": "hap debug",
+    "fa-build": "node node_modules/webpack/bin/webpack.js --progress --config ./node_modules/fa-toolkit/webpack.config.js",
+    "fa-watch": "node node_modules/webpack/bin/webpack.js --watch --progress --config ./node_modules/fa-toolkit/webpack.config.js",
+    "fa-release": "node ./node_modules/cross-env/src/bin/cross-env.js uglifyjs=true sign=release node_modules/webpack/bin/webpack.js --progress --config ./node_modules/fa-toolkit/webpack.config.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/runtime": "^7.6.3",
+    "@types/quickapp": "npm:quickapp-interface@^1.0.0",
+    "eslint": "^5.12.1",
+    "eslint-plugin-hybrid": "0.0.5",
+    "hap-toolkit": "^0.6.5",
+    "less": "^3.10.3",
+    "less-loader": "^5.0.0",
+    "cross-env": "^7.0.2"
+  },
+  "browserslist": [
+    "chrome 65"
+  ],
+  "dependencies": {
+    "@topon/quick-app-sdk-hw": "^4.1.47",
+    "union-quick-app-ad": "^1.0.35",
+    "js-base64": "^3.7.2",
+    "js-md5": "^0.7.3",
+    "lodash": "^4.17.21"
+  }
+}

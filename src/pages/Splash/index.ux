@@ -1,0 +1,270 @@
+<import name="ad-logs" src="../../Common/components/adLogs.ux"></import>
+<import name="topon-ad" src="@topon/quick-app-sdk-hw/placement.ux"></import>
+<!-- 自渲染示例组件 -->
+<import name="ad-self-render" src="../../Common/components/AdSelfRender.ux"></import>
+
+<template>
+  <div class="page-container">
+    <text class="title"> - 开屏广告 - </text>
+
+    <ad-logs></ad-logs>
+
+    <!-- 使用Placement组件 -->
+    <topon-ad
+      id="top-on-ad-{{placementId}}"
+      placement-id="{{placementId}}"
+      config="{{config}}"
+      @ad-load="handleAdLoad"
+      @ad-show="handleAdShow"
+      @ad-close="handleAdClose"
+      @ad-click="handleAdClick"
+      @ad-error="handleAdError"
+    >
+    </topon-ad>
+    <input
+      class="btn"
+      type="button"
+      value="加载/刷新广告"
+      onclick="handleLoadAd"
+    />
+
+    <input class="btn" type="button" value="isReady?" onclick="handleIsReady" />
+
+    <input class="btn" type="button" value="Get AD" onclick="handleGetAd" />
+
+    <input
+      if="{{isGetAd}}"
+      class="btn"
+      type="button"
+      value="展示广告"
+      onclick="handleDisplayAd"
+    />
+
+    <!-- 开屏自渲染广告 物料展示示例代码， ad-self-render组件仅限于该demo展示使用，请根据业务所需完成自己的ad-self-render组件包括但不限于样式、广告要素、交互事件等的开发 -->
+    <block if="adData && displayed && isSelfRendering">
+      <div class="splash-container">
+        <div class="splash-wrapper">
+          <stack>
+            <ad-self-render
+              ad-data="{{adData}}"
+              ad-type="splash"
+              @cus-show="handleReportShow"
+              @cus-click="handleReportClick"
+            ></ad-self-render>
+          </stack>
+          <stack class="close-container">
+            <div class="close-wrapper" @click="handleCloseSplash">
+              <text class="txt">X</text>
+            </div>
+          </stack>
+        </div>
+      </div>
+    </block>
+  </div>
+</template>
+    
+<script>
+
+export default {
+  data() {
+    return {
+      loaded: false,
+      isSelfRendering: false, // 是否自渲染，通过getAd获取
+      isGetAd: false,
+      config: {
+        entry: '/pages/Home', // 开屏广告结束后打开的第一个页面
+        timeout: 30000 // 默认0（走默认，开屏5秒，其他300秒），单位毫秒
+      },
+
+      adData: null, // 广告物料，通过getAd获取
+      displayed: false, // 自渲染广告组件展示控制
+      placementId: '${your placementId exp: b123456}', // 请替换为您在topon 开发者后台上的placementId
+    }
+  },
+
+  onReady() {
+    // 组件未挂载完成
+  },
+
+  // 广告源Load成功回调
+  handleAdLoad(e) {
+    this.$broadcast('logsUnshift', 'demo接收load回调：' + JSON.stringify(e))
+    console.log('demo接收load回调', e)
+    this.loaded = true
+  },
+
+  // 广告源Show成功回调
+  handleAdShow(e) {
+    this.$broadcast('logsUnshift', 'demo接收show回调：' + JSON.stringify(e))
+    console.log('demo接收show回调', e)
+  },
+
+  // 广告源Close成功回调
+  handleAdClose(e) {
+    this.$broadcast('logsUnshift', 'demo接收close回调：' + JSON.stringify(e))
+    console.log('demo接收close回调', e)
+  },
+
+  handleAdClick(e) {
+    this.$broadcast('logsUnshift', 'demo接收click回调：' + JSON.stringify(e))
+    console.log('demo接收click回调', e)
+  },
+
+  handleAdError(e) {
+    this.$broadcast('logsUnshift', 'demo接收error回调：' + JSON.stringify(e))
+    console.log('demo接收error回调', e)
+  },
+
+
+  handleDisplayAd() {
+    this.$broadcast('logsUnshift', '执行Show')
+    if (this.isSelfRendering) {
+      this.displayed = true
+    } else {
+      const placement = this.getSdkElement();
+      if (placement.show) {
+        placement.show()
+      }
+    }
+  },
+
+  handleLoadAd() {
+    this.$broadcast('logsUnshift', '执行Load')
+    /**
+     * 重置
+     */
+    this.isGetAd = false
+    this.displayed = false
+    this.adData = null
+    const placement = this.getSdkElement();
+    if (placement.load) {
+      placement.load()
+    }
+  },
+
+  handleIsReady() {
+    const placement = this.getSdkElement();
+    if (placement.isReady) {
+      const isReady = placement.isReady()
+      this.$broadcast('logsUnshift', 'isReady: ' + isReady)
+      return isReady
+    }
+  },
+
+  handleGetAd() {
+    if (!this.loaded) {
+      this.$broadcast('logsUnshift', '请等待加载完成后再获取数据')
+      console.log('请等待加载完成后再获取数据')
+      return
+    }
+    this.displayed = false
+    this.adData = null
+    const placement = this.getSdkElement()
+    if (placement) {
+      const currentAd = placement.getAd()
+      console.log('currentAd', currentAd)
+      if (!currentAd) {
+        return;
+      }
+      this.isSelfRendering = currentAd ?.isSelfRendering
+      // 若是自渲染
+      if (currentAd ?.isSelfRendering) {
+        this.adData = currentAd.ad
+        // this.displayed = true
+      } else {
+        this.adData = null
+        this.displayed = false
+      }
+      this.isGetAd = true
+      this.$broadcast('logsUnshift', currentAd)
+    }
+
+  },
+
+  handleReportShow() {
+    const placement = this.getSdkElement()
+    if (placement) {
+      placement.reportShow()
+    }
+  },
+
+  handleReportClick() {
+    const placement = this.getSdkElement()
+    if (placement) {
+      placement.reportClick()
+    }
+  },
+
+  getSdkElement() {
+    return this.$child(`top-on-ad-${this.placementId}`)
+  },
+
+  handleCloseSplash() {
+    this.displayed = false
+    this.isGetAd = false
+    this.adData = null
+  }
+}
+</script>
+    
+<style lang="less">
+.page-container {
+  flex-direction: column;
+  justify-content: center;
+
+  .title {
+    color: #ffa500;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  input {
+    margin: 30px 80px;
+    padding: 20px 0;
+    border-radius: 100px;
+    background-color: #2d8cf0;
+    color: #fff;
+  }
+}
+
+.splash-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  .splash-wrapper {
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: #272822;
+  }
+
+  .close-container {
+    flex-direction: row;
+    align-self: flex-start;
+    justify-content: flex-start;
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    right: 60px;
+    top: 160px;
+    z-index: 100;
+
+    .close-wrapper {
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: rgba(0, 0, 0, 0.5);
+
+      .txt {
+        color: #fff
+      }
+    }
+  }
+}
+</style>

@@ -1,0 +1,171 @@
+{
+  "package": "com.toponad.quickapp",
+  "name": "li-hua-demo-hw",
+  "versionName": "1.0.0",
+  "versionCode": 1,
+  "icon": "/Common/logo.png",
+  "minPlatformVersion": 1100,
+  "features": [
+    {
+      "name": "system.prompt"
+    },
+    {
+      "name": "system.network"
+    },
+    {
+      "name": "system.router"
+    },
+    {
+      "name": "system.fetch"
+    },
+    {
+      "name": "system.webview"
+    },
+    {
+      "name": "system.request"
+    },
+    {
+      "name": "system.device"
+    },
+    {
+      "name": "system.package"
+    },
+    {
+      "name": "system.storage"
+    },
+    {
+      "name": "service.account"
+    },
+    {
+      "name": "service.ad"
+    },
+    {
+      "name": "system.sensor"
+    },
+    {
+      "name": "system.file"
+    }
+  ],
+  "config": {},
+  "router": {
+    "entry": "pages/Home",
+    "pages": {
+      "pages/Home": {
+        "component": "index"
+      },
+      "pages/Native": {
+        "component": "index"
+      },
+      "pages/Rv": {
+        "component": "index"
+      },
+      "pages/Splash": {
+        "component": "index"
+      },
+      "UnionAd/AdReward": {
+        "component": "index"
+      },
+      "UnionAd/AdPage": {
+        "component": "index"
+      },
+      "UnionAd/AdLanding": {
+        "component": "index"
+      },
+      "pages/Banner": {
+        "component": "index"
+      },
+      "pages/Interstitial": {
+        "component": "index"
+      },
+      "TopOn/AdLanding": {
+        "component": "index"
+      },
+      "TopOn/AdReward": {
+        "component": "index"
+      }
+    }
+  },
+  "display": {
+    "titleBarBackgroundColor": "#f2f2f2",
+    "titleBarTextColor": "#414141",
+    "pages": {
+      "pages/Home": {
+        "titleBarText": "TopOn AD SDK Demo",
+        "fullScreen": false,
+        "menuBarData": {
+          "menuBar": true
+        }
+      },
+      "pages/Native": {
+        "fullScreen": false,
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "menuBarData": {
+          "menuBar": true
+        }
+      },
+      "pages/Rv": {
+        "fullScreen": false,
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "menuBarData": {
+          "menuBar": true
+        }
+      },
+      "pages/Splash": {
+        "fullScreen": false,
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "menuBarData": {
+          "menuBar": true
+        }
+      },
+      "UnionAd/AdReward": {
+        "fullScreen": true,
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "menuBarData": {
+          "menuBar": false
+        }
+      },
+      "UnionAd/AdPage": {
+        "fullScreen": true,
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "menuBarData": {
+          "menuBar": false
+        }
+      },
+      "UnionAd/AdLanding": {
+        "fullScreen": true,
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "menuBarData": {
+          "menuBar": false
+        }
+      },
+      "pages/Banner": {
+        "titleBarText": ""
+      },
+      "pages/Interstitial": {
+        "titleBarText": ""
+      },
+      "TopOn/AdLanding": {
+        "fullScreen": true,
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "menuBarData": {
+          "menuBar": false
+        }
+      },
+      "TopOn/AdReward": {
+        "fullScreen": true,
+        "titleBar": false,
+        "statusBarImmersive": true,
+        "menuBarData": {
+          "menuBar": false
+        }
+      }
+    }
+  }
+}

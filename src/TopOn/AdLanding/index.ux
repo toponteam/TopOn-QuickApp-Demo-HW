@@ -1,0 +1,44 @@
+<import name="topon-ad-web" src="@topon/quick-app-sdk-hw/web.ux"></import>
+
+<template>
+  <div class="top-on-ad-wrapper">
+    <topon-ad-web
+      url="{{websrc}}"
+      allow="{{allow}}"
+    >
+    </topon-ad-web>
+  </div>
+</template>
+
+<script>
+import router from '@system.router';
+export default {
+  data() {
+    return {
+      websrc: '',
+      allow: true
+    }
+  },
+
+  onInit() {
+    this.websrc = this.url;
+  },
+
+  onBackPress() {
+    if (this.entry) {
+      router.clear();
+      router.replace({
+        uri: this.entry,
+      });
+      return true;
+    }
+    return false;
+  }
+}
+</script>
+<style scoped>
+.top-on-ad-wrapper {
+    width: 100%;
+    height: 100%;
+}
+</style>

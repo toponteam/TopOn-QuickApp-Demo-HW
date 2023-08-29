@@ -1,0 +1,225 @@
+<import name="ad-logs" src="../../Common/components/adLogs.ux"></import>
+<import name="topon-ad" src="@topon/quick-app-sdk-hw/placement.ux"></import>
+<!-- 自渲染示例组件，请根据自身业务实现自渲染组件 -->
+<import name="ad-self-render" src="../../Common/components/AdSelfRender.ux"></import>
+
+<template>
+  <div class="page-container">
+    <text class="title"> - 原生广告 - </text>
+
+    <ad-logs></ad-logs>
+
+    <!-- 使用Placement组件 -->
+    <topon-ad
+      id="top-on-ad-{{placementId}}"
+      placement-id="{{placementId}}"
+      config="{{config}}"
+      @ad-load="handleAdLoad"
+      @ad-show="handleAdShow"
+      @ad-close="handleAdClose"
+      @ad-click="handleAdClick"
+      @ad-error="handleAdError"
+    >
+    </topon-ad>
+    <input
+      class="btn"
+      type="button"
+      value="加载/刷新广告"
+      onclick="handleLoadAd"
+    />
+
+    <input class="btn" type="button" value="isReady?" onclick="handleIsReady" />
+
+    <input class="btn" type="button" value="Get AD" onclick="handleGetAd" />
+
+    <input
+      if="{{isGetAd}}"
+      class="btn"
+      type="button"
+      value="展示广告"
+      onclick="handleDisplayAd"
+    />
+
+    <!-- 信息流自渲染广告 物料展示示例代码，ad-self-render组件于限与该demo展示使用，请根据业务所需完成自己的ad-self-render组件包括但不限于样式、广告要素、交互事件等的开发 -->
+    <block if="adData && displayed && isSelfRendering">
+      <ad-self-render
+        ad-data="{{adData}}"
+        ad-type="native"
+        @cus-show="handleReportShow"
+        @cus-click="handleReportClick"
+      ></ad-self-render>
+    </block>
+  </div>
+</template>
+    
+<script>
+
+export default {
+  data() {
+    return {
+      loaded: false,
+      isSelfRendering: false, // 是否自渲染，通过getAd获取
+      isGetAd: false,
+      config: {
+        entry: '/pages/Home', // 开屏广告结束后打开的第一个页面
+        timeout: 30000 // 默认0（走默认，开屏5秒，其他300秒），单位毫秒
+      },
+
+      placementId: 'b63985b63399dc', // 请替换为您在topon 开发者后台上的placementId
+
+      adData: null, // 广告物料，通过getAd获取
+      displayed: false // 自渲染广告组件展示控制
+    }
+  },
+
+  onReady() {
+    // 组件未挂载完成
+  },
+
+  // 广告源Load成功回调
+  handleAdLoad(e) {
+    this.$broadcast('logsUnshift', 'demo接收load回调：' + JSON.stringify(e))
+    console.log('demo接收load回调', e)
+    this.loaded = true
+  },
+
+  // 广告源Show成功回调
+  handleAdShow(e) {
+    this.$broadcast('logsUnshift', 'demo接收show回调：' + JSON.stringify(e))
+    console.log('demo接收show回调', e)
+  },
+
+  // 广告源Close成功回调
+  handleAdClose(e) {
+    this.$broadcast('logsUnshift', 'demo接收close回调：' + JSON.stringify(e))
+    console.log('demo接收close回调', e)
+  },
+
+  handleAdClick(e) {
+    this.$broadcast('logsUnshift', 'demo接收click回调：' + JSON.stringify(e))
+    console.log('demo接收click回调', e)
+  },
+
+  handleAdError(e) {
+    this.$broadcast('logsUnshift', 'demo接收error回调：' + JSON.stringify(e))
+    console.log('demo接收error回调', e)
+  },
+
+
+  // 展示广告广告
+  handleDisplayAd() {
+    this.$broadcast('logsUnshift', '执行Show')
+    if (this.isSelfRendering) {
+      this.displayed = true
+    } else {
+      const placement = this.getSdkElement();
+      if (placement.show) {
+        placement.show()
+      }
+    }
+  },
+
+  // load加载广告【首次挂载组件时，sdk会自动加载一次广告，无需调用.load()方法】
+  handleLoadAd() {
+    this.$broadcast('logsUnshift', '执行Load')
+    /**
+     * 重置
+     */
+    this.isGetAd = false
+    this.displayed = false
+    this.adData = null
+    const placement = this.getSdkElement();
+    if (placement.load) {
+      placement.load()
+    }
+  },
+
+  handleIsReady() {
+    const placement = this.getSdkElement();
+    if (placement.isReady) {
+      const isReady = placement.isReady()
+      this.$broadcast('logsUnshift', 'isReady: ' + isReady)
+      return isReady
+    }
+  },
+
+  // 获取广告素材
+  handleGetAd() {
+    if (!this.loaded) {
+      this.$broadcast('logsUnshift', '请等待加载完成后再获取数据')
+      console.log('请等待加载完成后再获取数据')
+      return
+    }
+    this.displayed = false
+    this.adData = null
+    const placement = this.getSdkElement()
+    if (placement) {
+      const currentAd = placement.getAd()
+      console.log('currentAd', currentAd)
+      if (!currentAd) {
+        return;
+      }
+      // 判断是否为自渲染广告
+      this.isSelfRendering = currentAd?.isSelfRendering
+      // 若是自渲染
+      if (currentAd?.isSelfRendering) {
+        this.adData = currentAd.ad
+      } else {
+        this.adData = null
+        this.displayed = false
+      }
+      this.isGetAd = true
+      this.$broadcast('logsUnshift', currentAd)
+    }
+
+  },
+
+  // 上报广告展示统计
+  handleReportShow(e) {
+    this.$broadcast('logsUnshift', 'demo接收show回调：' + JSON.stringify(e))
+    console.log('demo接收show回调', e)
+    const placement = this.getSdkElement()
+    if (placement?.reportShow) {
+      console.log('上报show')
+      placement.reportShow()
+    }
+  },
+
+  // 上报广告点击统计
+  handleReportClick(e) {
+    this.$broadcast('logsUnshift', 'demo接收show回调：' + JSON.stringify(e))
+    console.log('demo接收show回调', e)
+    const placement = this.getSdkElement()
+    if (placement?.reportClick) {
+      console.log('上报click')
+      placement.reportClick()
+    }
+  },
+
+  // 获取广告组件实例
+  getSdkElement() {
+    return this.$child(`top-on-ad-${this.placementId}`)
+  }
+}
+</script>
+    
+<style lang="less">
+.page-container {
+  flex-direction: column;
+  justify-content: center;
+
+  .title {
+    color: #ffa500;
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  input {
+    margin: 30px 80px;
+    padding: 20px 0;
+    border-radius: 100px;
+    background-color: #2d8cf0;
+    color: #fff;
+  }
+}
+</style>
