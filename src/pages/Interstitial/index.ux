@@ -32,7 +32,7 @@
 
     <!-- 使用Placement组件 -->
     <topon-ad
-      id="top-on-ad-{{placementId}}"
+      id="topon-ad-{{placementId}}"
       placement-id="{{placementId}}"
       config="{{config}}"
       @ad-load="handleAdLoad"
@@ -133,7 +133,7 @@ export default {
   },
 
   getSdkElement() {
-    return this.$child(`top-on-ad-${this.placementId}`)
+    return this.$child(`topon-ad-${this.placementId}`)
   }
 }
 </script>

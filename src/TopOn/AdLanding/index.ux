@@ -1,7 +1,7 @@
 <import name="topon-ad-web" src="@topon/quick-app-sdk-hw/web.ux"></import>
 
 <template>
-  <div class="top-on-ad-wrapper">
+  <div class="topon-ad-wrapper">
     <topon-ad-web
       url="{{websrc}}"
       allow="{{allow}}"
@@ -37,7 +37,7 @@ export default {
 }
 </script>
 <style scoped>
-.top-on-ad-wrapper {
+.topon-ad-wrapper {
     width: 100%;
     height: 100%;
 }
