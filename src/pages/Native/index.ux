@@ -65,7 +65,7 @@ export default {
         timeout: 30000 // 默认0（走默认，开屏5秒，其他300秒），单位毫秒
       },
 
-      placementId: 'b63985b63399dc', // 请替换为您在topon 开发者后台上的placementId
+      placementId: '${your placementId exp: b123456}', // 请替换为您在topon 开发者后台上的placementId
 
       adData: null, // 广告物料，通过getAd获取
       displayed: false // 自渲染广告组件展示控制

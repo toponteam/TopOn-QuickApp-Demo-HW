@@ -24,21 +24,21 @@
   "devDependencies": {
     "@babel/runtime": "^7.6.3",
     "@types/quickapp": "npm:quickapp-interface@^1.0.0",
+    "cross-env": "^7.0.2",
     "eslint": "^5.12.1",
     "eslint-plugin-hybrid": "0.0.5",
     "hap-toolkit": "^0.6.5",
     "less": "^3.10.3",
-    "less-loader": "^5.0.0",
-    "cross-env": "^7.0.2"
+    "less-loader": "^5.0.0"
   },
   "browserslist": [
     "chrome 65"
   ],
   "dependencies": {
-    "@topon/quick-app-sdk-hw": "^4.1.47",
-    "union-quick-app-ad": "^1.0.35",
+    "@topon/quick-app-sdk-hw": "^4.2.7",
     "js-base64": "^3.7.2",
     "js-md5": "^0.7.3",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "union-quick-app-ad": "^1.0.35"
   }
 }

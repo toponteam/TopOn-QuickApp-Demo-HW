@@ -179,7 +179,7 @@ export default {
 
   onAdButtonClick(event) {
     console.error('result code is : ', event.resultCode)
-    this.$emit('btnClick', event)
+    this.$emit('cusClick', event)
   }
 }
 </script>
